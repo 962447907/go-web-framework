@@ -3,6 +3,7 @@ package gee
 import (
 	"errors"
 	"fmt"
+	"gee/gee/context"
 	"log"
 	"net/http"
 	"sort"
@@ -47,13 +48,13 @@ func (n *node) sort() []string {
 
 type router struct {
 	roots    map[string]*node
-	handlers map[string]HandlerFunc
+	handlers map[string]context.HandlerFunc
 }
 
 func newRouter() *router {
 	r := &router{
 		roots:    make(map[string]*node),
-		handlers: make(map[string]HandlerFunc),
+		handlers: make(map[string]context.HandlerFunc),
 	}
 	for _, method := range methods {
 		r.roots[method] = &node{children: make(map[string]*node)}
@@ -78,7 +79,7 @@ func parsePath(pattern string) []string {
 }
 
 // addRoute 绑定路由到handler
-func (r *router) addRoute(method, path string, handler HandlerFunc) {
+func (r *router) addRoute(method, path string, handler context.HandlerFunc) {
 	parts := parsePath(path)
 	root := r.roots[method]
 	if root.path != "" && len(parts) == 0 {
@@ -129,17 +130,19 @@ func (r *router) getRoute(method, path string) (node *node, params map[string]st
 }
 
 // handle 用来绑定路由和handlerFunc
-func (r *router) handle(c *Context) {
-
+func (r *router) handle(c *context.Context) {
 	// 获取路由树节点和动态路由中的参数
 	node, params := r.getRoute(c.Method, c.Path)
 	if node != nil {
 		c.Params = params
 		key := r.getRouteKey(c.Method, node.path)
-		r.handlers[key](c)
+		c.Handlers = append(c.Handlers, r.handlers[key])
 	} else {
-		c.String(http.StatusNotFound, "404 NOT FOUND %s \n", c.Path)
+		c.Handlers = []context.HandlerFunc{func(ctx *context.Context) {
+			c.String(http.StatusNotFound, "404 NOT FOUND %s \n", c.Path)
+		}}
 	}
+	c.Next()
 }
 
 func (r *router) getRouteKey(method string, path string) string {

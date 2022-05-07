@@ -1,3 +1,4 @@
-GET http://localhost:9999/a/x
+GET http://localhost:9998/v1
 
-###
+### test panic recover
+GET http://localhost:9998/panic
