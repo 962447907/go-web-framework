@@ -4,7 +4,9 @@ diy golang web framework
 
 ## 参考链接
 [前缀树算法实现路由匹配原理解析：Go 实现](https://jishuin.proginn.com/p/763bfbd2a2ba)
+
 [七天用Go从零实现系列](https://geektutu.com/post/gee-day4.html)
+
 [Go 数据结构和算法篇（十三）：字符串匹配之 Trie 树](https://geekr.dev/posts/go-trie-tree-algorithm)
 
 ## Trie 树的应用
@@ -18,7 +20,9 @@ Trie 树适用于那些查找前缀匹配的字符串，比如敏感词过滤和
 
 ### 搜索框联想功能
 另外，搜索框的查询关键词联想功能也是基于 Trie 树实现的：
-![](https://coding-pic.oss-cn-hangzhou.aliyuncs.com/images/2022-05-07-img.png)
+
+![google](https://coding-pic.oss-cn-hangzhou.aliyuncs.com/images/2022-05-07-img.png)
+
 Google搜索框联想词, 进而可以扩展到浏览器网址输入自动补全、IDE 代码编辑器自动补全、输入法自动补全功能等。
 
 ## 优化点
@@ -44,4 +48,4 @@ c.handlers = middlewares
 
 ## feat
 - recover panic
-![](https://coding-pic.oss-cn-hangzhou.aliyuncs.com/images/2022-05-07-L0Ov4C.png)
+- ![recover panic](https://coding-pic.oss-cn-hangzhou.aliyuncs.com/images/2022-05-07-L0Ov4C.png)
